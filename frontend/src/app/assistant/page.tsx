@@ -62,11 +62,11 @@ export default function AssistantPage() {
     <div className="h-[calc(100vh-8rem)] flex flex-col space-y-4">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <Bot className="w-6 h-6 text-indigo-400" />
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400" />
           <span>Assistant IA Superviseur</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Interrogez l'écosystème en langage naturel (LiteLLM + requêtes analytiques sécurisées).
         </p>
       </div>
@@ -77,16 +77,16 @@ export default function AssistantPage() {
           <button
             key={idx}
             onClick={() => handleSend(p)}
-            className="px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800 shrink-0 text-left transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shrink-0 text-left transition-colors flex items-center gap-1.5 shadow-sm"
           >
-            <Sparkles className="w-3 h-3 text-indigo-400 shrink-0" />
+            <Sparkles className="w-3 h-3 text-indigo-600 dark:text-indigo-400 shrink-0" />
             <span>{p}</span>
           </button>
         ))}
       </div>
 
       {/* Chat Messages Container */}
-      <div className="flex-1 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 overflow-y-auto space-y-4">
+      <div className="flex-1 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 overflow-y-auto space-y-4 shadow-sm">
         {messages.map((m, idx) => (
           <div
             key={idx}
@@ -95,23 +95,23 @@ export default function AssistantPage() {
             }`}
           >
             <div
-              className={`max-w-2xl p-4 rounded-2xl text-xs leading-relaxed space-y-2.5 ${
+              className={`max-w-2xl p-4 rounded-2xl text-xs leading-relaxed space-y-2.5 shadow-sm ${
                 m.role === 'user'
-                  ? 'bg-indigo-600 text-white rounded-br-none shadow-md'
-                  : 'bg-slate-950 border border-slate-800 text-slate-200 rounded-bl-none'
+                  ? 'bg-indigo-600 text-white rounded-br-none'
+                  : 'bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-none'
               }`}
             >
               {/* Tool Execution Badges if assistant used tools */}
               {m.tools && m.tools.length > 0 && (
-                <div className="space-y-1 pb-2 border-b border-slate-800">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-400 flex items-center gap-1">
+                <div className="space-y-1 pb-2 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
                     <Database className="w-3 h-3" />
                     <span>Outils de supervision exécutés :</span>
                   </span>
                   {m.tools.map((t: any, tidx: number) => (
                     <div
                       key={tidx}
-                      className="text-[11px] font-mono text-slate-400 bg-slate-900 p-1.5 rounded border border-slate-800/80"
+                      className="text-[11px] font-mono text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 p-1.5 rounded border border-slate-200 dark:border-slate-800/80"
                     >
                       • <strong>{t.tool}</strong>: {t.result_summary}
                     </div>
@@ -122,7 +122,7 @@ export default function AssistantPage() {
               <p className="whitespace-pre-line">{m.content}</p>
 
               {m.execution_time_ms !== undefined && (
-                <div className="text-[10px] text-slate-500 font-mono text-right flex items-center justify-end gap-1">
+                <div className="text-[10px] text-slate-400 dark:text-slate-500 font-mono text-right flex items-center justify-end gap-1">
                   <Clock className="w-2.5 h-2.5" />
                   <span>{m.execution_time_ms} ms</span>
                 </div>
@@ -131,7 +131,7 @@ export default function AssistantPage() {
           </div>
         ))}
         {loading && (
-          <div className="flex items-center gap-2 text-xs text-indigo-400 p-2">
+          <div className="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 p-2">
             <Sparkles className="w-4 h-4 animate-spin" />
             <span>Consultation des bases de télémétrie en cours...</span>
           </div>
@@ -144,19 +144,19 @@ export default function AssistantPage() {
           e.preventDefault();
           handleSend();
         }}
-        className="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-xl p-2"
+        className="flex items-center gap-2 sm:gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-2 shadow-sm"
       >
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Posez une question sur l'écosystème (ex: Qu'a fait cet utilisateur aujourd'hui ?)..."
-          className="flex-1 bg-transparent px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none"
+          placeholder="Posez une question sur l'écosystème..."
+          className="flex-1 bg-transparent px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
         />
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white p-2 rounded-lg transition-colors"
+          className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white p-2 rounded-lg transition-colors shrink-0"
         >
           <Send className="w-4 h-4" />
         </button>

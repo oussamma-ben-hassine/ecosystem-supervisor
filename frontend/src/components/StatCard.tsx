@@ -21,38 +21,46 @@ export default function StatCard({
   variant = 'default',
 }: StatCardProps) {
   const borderStyles = {
-    default: 'border-slate-800 hover:border-slate-700',
-    danger: 'border-rose-900/40 bg-rose-950/10 hover:border-rose-800/60',
-    warning: 'border-amber-900/40 bg-amber-950/10 hover:border-amber-800/60',
-    success: 'border-emerald-900/40 bg-emerald-950/10 hover:border-emerald-800/60',
+    default:
+      'border-slate-200 dark:border-white/10 bg-white dark:bg-[#121212] hover:border-slate-300 dark:hover:border-white/20',
+    danger:
+      'border-rose-200 dark:border-rose-900/40 bg-rose-50/50 dark:bg-rose-950/20 hover:border-rose-300 dark:hover:border-rose-800/60',
+    warning:
+      'border-amber-200 dark:border-amber-900/40 bg-amber-50/50 dark:bg-amber-950/20 hover:border-amber-300 dark:hover:border-amber-800/60',
+    success:
+      'border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/50 dark:bg-emerald-950/20 hover:border-emerald-300 dark:hover:border-emerald-800/60',
   }[variant];
 
   const iconColors = {
-    default: 'text-indigo-400 bg-indigo-500/10',
-    danger: 'text-rose-400 bg-rose-500/10',
-    warning: 'text-amber-400 bg-amber-500/10',
-    success: 'text-emerald-400 bg-emerald-500/10',
+    default: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10',
+    danger: 'text-rose-600 dark:text-rose-400 bg-rose-100 dark:bg-rose-500/10',
+    warning: 'text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-500/10',
+    success: 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/10',
   }[variant];
 
   return (
     <div
-      className={`p-5 rounded-xl bg-slate-900/60 border ${borderStyles} transition-all duration-200 backdrop-blur-sm`}
+      className={`p-5 rounded-xl border ${borderStyles} transition-all duration-200 shadow-sm`}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-slate-400">{title}</span>
+        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          {title}
+        </span>
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconColors}`}>
           <Icon className="w-4 h-4" />
         </div>
       </div>
 
       <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-white tracking-tight">{value}</span>
+        <span className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          {value}
+        </span>
         {change && (
           <span
-            className={`text-xs font-semibold px-1.5 py-0.5 rounded ${
+            className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
               isPositive
-                ? 'text-emerald-400 bg-emerald-500/10'
-                : 'text-rose-400 bg-rose-500/10'
+                ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/10'
+                : 'text-rose-700 dark:text-rose-400 bg-rose-100 dark:bg-rose-500/10'
             }`}
           >
             {change}
@@ -60,7 +68,9 @@ export default function StatCard({
         )}
       </div>
 
-      {subtext && <p className="mt-1 text-[11px] text-slate-500">{subtext}</p>}
+      {subtext && (
+        <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium">{subtext}</p>
+      )}
     </div>
   );
 }

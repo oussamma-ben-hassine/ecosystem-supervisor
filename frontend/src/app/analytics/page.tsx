@@ -16,11 +16,11 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <BarChart3 className="w-6 h-6 text-indigo-400" />
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400" />
           <span>Statistiques & Analytics Avancés</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Analyse des cohortes, taux d'engagement (DAU/WAU/MAU) et fréquences d'utilisation.
         </p>
       </div>
@@ -46,8 +46,8 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-        <h3 className="text-sm font-semibold text-white mb-4">Volume d'Activité sur 7 Jours</h3>
+      <div className="p-5 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Volume d'Activité sur 7 Jours</h3>
         <div className="h-52 flex items-end gap-3 pt-6 px-2">
           {data?.activity_trend_7d.map((pt, idx) => {
             const max = Math.max(...(data?.activity_trend_7d.map((p) => p.count) || [100]));
@@ -55,14 +55,14 @@ export default function AnalyticsPage() {
 
             return (
               <div key={idx} className="flex-1 flex flex-col items-center gap-2 group">
-                <span className="text-[10px] font-mono text-slate-400">{pt.count}</span>
-                <div className="w-full bg-slate-800 rounded-t-md overflow-hidden h-36 flex items-end">
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">{pt.count}</span>
+                <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md overflow-hidden h-36 flex items-end">
                   <div
                     style={{ height: `${heightPct}%` }}
                     className="w-full bg-indigo-600 rounded-t-md group-hover:bg-indigo-500 transition-all"
                   ></div>
                 </div>
-                <span className="text-[10px] text-slate-400 font-medium">{pt.date}</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{pt.date}</span>
               </div>
             );
           })}

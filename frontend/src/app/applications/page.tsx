@@ -31,11 +31,11 @@ export default function ApplicationsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <Grid className="w-6 h-6 text-indigo-400" />
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <Grid className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           <span>Applications Intégrées & Clés d'Ingestion</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Inventaire des services de l'écosystème, authentification serveur-à-serveur et connecteurs d'ingestion.
         </p>
       </div>
@@ -44,26 +44,26 @@ export default function ApplicationsPage() {
         {apps.map((app) => (
           <div
             key={app.id}
-            className="p-5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-all space-y-4"
+            className="p-5 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-all shadow-sm space-y-4"
           >
             <div className="flex items-start justify-between">
               <div>
-                <span className="font-bold text-white text-base block">{app.name}</span>
-                <span className="text-[11px] font-mono text-indigo-400">id: {app.id}</span>
+                <span className="font-bold text-slate-900 dark:text-white text-base block">{app.name}</span>
+                <span className="text-[11px] font-mono text-indigo-600 dark:text-indigo-400">id: {app.id}</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
                 {app.integration_status.toUpperCase()}
               </span>
             </div>
 
-            <div className="text-xs text-slate-400 space-y-1">
+            <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
               <div className="flex items-center justify-between">
                 <span>Événements ingérés :</span>
-                <strong className="text-slate-200 font-mono">{app.events_count || 0}</strong>
+                <strong className="text-slate-800 dark:text-slate-200 font-mono">{app.events_count || 0}</strong>
               </div>
               <div className="flex items-center justify-between">
                 <span>Utilisateurs actifs :</span>
-                <strong className="text-slate-200 font-mono">{app.active_users_count || 0}</strong>
+                <strong className="text-slate-800 dark:text-slate-200 font-mono">{app.active_users_count || 0}</strong>
               </div>
             </div>
 
@@ -72,10 +72,10 @@ export default function ApplicationsPage() {
                 href={app.fqdn}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-xs text-indigo-400 hover:underline pt-2 border-t border-slate-800"
+                className="flex items-center gap-1.5 text-xs text-indigo-600 dark:text-indigo-400 font-medium hover:underline pt-2 border-t border-slate-200 dark:border-white/10"
               >
                 <span>{app.fqdn}</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="w-3 h-3 text-slate-400" />
               </a>
             )}
           </div>

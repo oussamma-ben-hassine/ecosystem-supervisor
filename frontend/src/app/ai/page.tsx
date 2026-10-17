@@ -48,11 +48,11 @@ export default function AISupervisionPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <Cpu className="w-6 h-6 text-indigo-400" />
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <Cpu className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           <span>Supervision LiteLLM & Intelligence Artificielle</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Surveillance des modèles, consommation de tokens, coûts estimés et latences (sans stockage des prompts).
         </p>
       </div>
@@ -88,18 +88,18 @@ export default function AISupervisionPage() {
       {/* Breakdown Grids */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Models distribution */}
-        <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-          <h3 className="text-sm font-semibold text-white mb-4">Répartition par Modèle</h3>
+        <div className="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Répartition par Modèle</h3>
           <div className="space-y-3">
             {data?.models.map((m) => (
-              <div key={m.model} className="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 flex items-center justify-between text-xs">
+              <div key={m.model} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
                 <div>
-                  <span className="font-semibold text-slate-200 block">{m.model}</span>
-                  <span className="text-[11px] text-slate-400">{m.requests} requêtes</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200 block">{m.model}</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{m.requests} requêtes</span>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono text-indigo-400 font-bold block">{m.tokens.toLocaleString()} tokens</span>
-                  <span className="text-[11px] font-mono text-slate-400">${m.cost} USD</span>
+                  <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{m.tokens.toLocaleString()} tokens</span>
+                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${m.cost} USD</span>
                 </div>
               </div>
             ))}
@@ -107,18 +107,18 @@ export default function AISupervisionPage() {
         </div>
 
         {/* Applications distribution */}
-        <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-          <h3 className="text-sm font-semibold text-white mb-4">Consommation par Application</h3>
+        <div className="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Consommation par Application</h3>
           <div className="space-y-3">
             {data?.applications.map((a) => (
-              <div key={a.application_id} className="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 flex items-center justify-between text-xs">
+              <div key={a.application_id} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
                 <div>
-                  <span className="font-semibold text-slate-200 block">{a.application_id}</span>
-                  <span className="text-[11px] text-slate-400">{a.requests} appels IA</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200 block">{a.application_id}</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{a.requests} appels IA</span>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono text-indigo-400 font-bold block">{a.tokens.toLocaleString()} tokens</span>
-                  <span className="text-[11px] font-mono text-slate-400">${a.cost} USD</span>
+                  <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{a.tokens.toLocaleString()} tokens</span>
+                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${a.cost} USD</span>
                 </div>
               </div>
             ))}

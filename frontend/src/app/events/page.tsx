@@ -26,17 +26,17 @@ export default function EventsJournalPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <Activity className="w-6 h-6 text-indigo-400" />
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+          <Activity className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           <span>Journal Global d'Activités</span>
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
           Registre d'audit centralisé, immuable et interrogeable avec corrélation de requêtes.
         </p>
       </div>
 
       {/* Filter bar */}
-      <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row items-center gap-4">
+      <div className="p-4 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm flex flex-col sm:flex-row items-center gap-4">
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -44,13 +44,13 @@ export default function EventsJournalPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher par Event ID, corrélation ou ressource..."
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            className="w-full bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500"
           />
         </div>
         <select
           value={appFilter}
           onChange={(e) => setAppFilter(e.target.value)}
-          className="bg-slate-950 border border-slate-800 text-xs text-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500"
+          className="w-full sm:w-auto bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/10 text-xs text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500"
         >
           <option value="">Toutes les applications</option>
           <option value="sso">SSO</option>
@@ -65,10 +65,10 @@ export default function EventsJournalPage() {
       </div>
 
       {/* Events Table */}
-      <div className="rounded-xl bg-slate-900/60 border border-slate-800 overflow-hidden">
+      <div className="rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950/80 text-slate-400 border-b border-slate-800 uppercase tracking-wider font-semibold">
+            <thead className="bg-slate-50 dark:bg-black/30 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-white/10 uppercase tracking-wider font-semibold">
               <tr>
                 <th className="py-3 px-4">Event ID</th>
                 <th className="py-3 px-4">Type</th>
@@ -79,21 +79,21 @@ export default function EventsJournalPage() {
                 <th className="py-3 px-4">Corrélation</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-slate-300">
+            <tbody className="divide-y divide-slate-200 dark:divide-white/5 text-slate-700 dark:text-slate-300">
               {events.map((ev) => (
-                <tr key={ev.event_id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-3 px-4 font-mono text-[11px] text-indigo-400">{ev.event_id}</td>
-                  <td className="py-3 px-4 font-medium text-slate-100">{ev.event_type}</td>
+                <tr key={ev.event_id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                  <td className="py-3 px-4 font-mono text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold">{ev.event_id}</td>
+                  <td className="py-3 px-4 font-medium text-slate-900 dark:text-slate-100">{ev.event_type}</td>
                   <td className="py-3 px-4">
-                    <span className="bg-slate-800 px-2 py-0.5 rounded font-mono text-[11px] text-slate-300">
+                    <span className="bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded font-mono text-[11px] text-slate-700 dark:text-slate-300">
                       {ev.application_id}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-slate-300">{ev.actor?.sub || 'Système'}</td>
+                  <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{ev.actor?.sub || 'Système'}</td>
                   <td className="py-3 px-4">
                     <span
                       className={`inline-flex items-center gap-1 font-semibold ${
-                        ev.outcome === 'success' ? 'text-emerald-400' : 'text-rose-400'
+                        ev.outcome === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
                       }`}
                     >
                       {ev.outcome === 'success' ? (
@@ -104,8 +104,8 @@ export default function EventsJournalPage() {
                       <span>{ev.outcome}</span>
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-slate-400">{ev.occurred_at}</td>
-                  <td className="py-3 px-4 font-mono text-[11px] text-slate-400">
+                  <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{ev.occurred_at}</td>
+                  <td className="py-3 px-4 font-mono text-[11px] text-slate-500 dark:text-slate-400">
                     {ev.correlation_id || '—'}
                   </td>
                 </tr>
