@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Users, Search, Filter, Shield, Activity, ChevronRight, CheckCircle2 } from 'lucide-react';
-import { UserSummary } from '@/lib/types';
-import { api } from '@/lib/api';
+import { UserSummary } from '../../lib/types';
+import { api } from '../../lib/api';
 
 export default function UsersDirectoryPage() {
   const [users, setUsers] = useState<UserSummary[]>([]);

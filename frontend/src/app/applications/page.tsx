@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Grid, Key, ExternalLink, ShieldCheck, CheckCircle2, Copy } from 'lucide-react';
-import { Application } from '@/lib/types';
-import { api } from '@/lib/api';
+import { Application } from '../../lib/types';
+import { api } from '../../lib/api';
 
 export default function ApplicationsPage() {
   const [apps, setApps] = useState<Application[]>([]);

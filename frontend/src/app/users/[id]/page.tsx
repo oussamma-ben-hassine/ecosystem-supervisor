@@ -17,8 +17,8 @@ import {
   ChevronDown,
   Info,
 } from 'lucide-react';
-import { UserActivityResponse, ActivityTimelineItem } from '@/lib/types';
-import { api } from '@/lib/api';
+import { UserActivityResponse, ActivityTimelineItem } from '../../../lib/types';
+import { api } from '../../../lib/api';
 
 export default function UserActivity360Page() {
   const params = useParams();

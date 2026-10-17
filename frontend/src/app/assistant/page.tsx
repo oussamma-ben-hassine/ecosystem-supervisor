@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Bot, Send, Sparkles, Database, Shield, Clock } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api } from '../../lib/api';
 
 const samplePrompts = [
   "Qu'a fait cet utilisateur aujourd'hui ?",

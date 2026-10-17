@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { BarChart3, TrendingUp, Users, Calendar } from 'lucide-react';
-import StatCard from '@/components/StatCard';
-import { AnalyticsOverview } from '@/lib/types';
-import { api } from '@/lib/api';
+import StatCard from '../../components/StatCard';
+import { AnalyticsOverview } from '../../lib/types';
+import { api } from '../../lib/api';
 
 export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsOverview | null>(null);

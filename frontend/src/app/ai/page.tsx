@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Cpu, DollarSign, Zap, AlertCircle, ShieldCheck } from 'lucide-react';
-import StatCard from '@/components/StatCard';
-import { AIUsageStats } from '@/lib/types';
-import { api } from '@/lib/api';
+import StatCard from '../../components/StatCard';
+import { AIUsageStats } from '../../lib/types';
+import { api } from '../../lib/api';
 
 export default function AISupervisionPage() {
   const [data, setData] = useState<AIUsageStats | null>(null);

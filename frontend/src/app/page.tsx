@@ -14,9 +14,9 @@ import {
   XCircle,
   ExternalLink,
 } from 'lucide-react';
-import StatCard from '@/components/StatCard';
-import { AnalyticsOverview } from '@/lib/types';
-import { api } from '@/lib/api';
+import StatCard from '../components/StatCard';
+import { AnalyticsOverview } from '../lib/types';
+import { api } from '../lib/api';
 
 export default function DashboardPage() {
   const [data, setData] = useState<AnalyticsOverview | null>(null);

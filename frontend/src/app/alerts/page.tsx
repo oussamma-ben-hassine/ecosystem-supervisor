@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { AlertTriangle, CheckCircle2, ShieldAlert, Clock, RefreshCw, XCircle } from 'lucide-react';
-import { AlertItem } from '@/lib/types';
-import { api } from '@/lib/api';
+import { AlertItem } from '../../lib/types';
+import { api } from '../../lib/api';
 
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
