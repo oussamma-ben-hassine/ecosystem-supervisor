@@ -1,10 +1,7 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: supervisor-postgres
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-supervisor_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}
@@ -12,17 +9,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U supervisor_user -d supervisor_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-supervisor_user} -d ${POSTGRES_DB:-supervisor_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - supervisor_net
 
   redis:
     image: redis:7-alpine
-    container_name: supervisor-redis
-    restart: always
+    restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
@@ -31,15 +25,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - supervisor_net
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: supervisor-backend
-    restart: always
+    restart: unless-stopped
     environment:
       - ENVIRONMENT=production
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-supervisor_user}:${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}@postgres:5432/${POSTGRES_DB:-supervisor_db}
@@ -52,22 +43,17 @@ services:
       - SSO_REDIRECT_URI=${SSO_REDIRECT_URI:-https://supervisor.oussamma.tn/api/v1/auth/sso/callback}
       - LITELLM_BASE_URL=${LITELLM_BASE_URL:-https://ai.oussamma.tn}
       - LITELLM_API_KEY=${LITELLM_API_KEY:-sk-oussamma-master-gateway-2026}
-    expose:
-      - "8000"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - supervisor_net
 
   worker:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: supervisor-worker
-    restart: always
+    restart: unless-stopped
     command: ["python", "-m", "app.workers.event_worker"]
     environment:
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-supervisor_user}:${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}@postgres:5432/${POSTGRES_DB:-supervisor_db}
@@ -77,45 +63,21 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - supervisor_net
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - NEXT_PUBLIC_API_URL=https://supervisor.oussamma.tn
       - INTERNAL_BACKEND_URL=http://backend:8000
       - PORT=3000
     ports:
       - "3000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=coolify"
-      - "traefik.http.routers.supervisor-http.entrypoints=http"
-      - "traefik.http.routers.supervisor-http.rule=Host(`supervisor.oussamma.tn`)"
-      - "traefik.http.routers.supervisor-http.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.supervisor-https.entrypoints=https"
-      - "traefik.http.routers.supervisor-https.rule=Host(`supervisor.oussamma.tn`)"
-      - "traefik.http.routers.supervisor-https.tls=true"
-      - "traefik.http.routers.supervisor-https.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.supervisor-https.service=supervisor-frontend"
-      - "traefik.http.services.supervisor-frontend.loadbalancer.server.port=3000"
     depends_on:
       - backend
-    networks:
-      - supervisor_net
-      - coolify
 
 volumes:
   postgres_data:
   redis_data:
-
-networks:
-  supervisor_net:
-    driver: bridge
-  coolify:
-    external: true
