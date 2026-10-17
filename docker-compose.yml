@@ -52,8 +52,8 @@ services:
       - SSO_REDIRECT_URI=${SSO_REDIRECT_URI:-https://supervisor.oussamma.tn/api/v1/auth/sso/callback}
       - LITELLM_BASE_URL=${LITELLM_BASE_URL:-https://ai.oussamma.tn}
       - LITELLM_API_KEY=${LITELLM_API_KEY:-sk-oussamma-master-gateway-2026}
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -88,9 +88,10 @@ services:
     restart: always
     environment:
       - NEXT_PUBLIC_API_URL=https://supervisor.oussamma.tn
+      - INTERNAL_BACKEND_URL=http://backend:8000
       - PORT=3000
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - backend
     networks:

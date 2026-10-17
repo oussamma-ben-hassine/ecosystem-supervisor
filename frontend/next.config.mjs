@@ -18,6 +18,27 @@ const nextConfig = {
     config.resolve.alias['@'] = path.resolve(__dirname, 'src');
     return config;
   },
+  async rewrites() {
+    const backendUrl = process.env.INTERNAL_BACKEND_URL || 'http://backend:8000';
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${backendUrl}/api/:path*`,
+      },
+      {
+        source: '/docs/:path*',
+        destination: `${backendUrl}/docs/:path*`,
+      },
+      {
+        source: '/docs',
+        destination: `${backendUrl}/docs`,
+      },
+      {
+        source: '/openapi.json',
+        destination: `${backendUrl}/openapi.json`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
