@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: supervisor-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-supervisor_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-supervisor_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U supervisor_user -d supervisor_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supervisor_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: supervisor-redis
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supervisor_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: supervisor-backend
+    restart: always
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-supervisor_user}:${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}@postgres:5432/${POSTGRES_DB:-supervisor_db}
+      - DATABASE_URL_SYNC=postgresql://${POSTGRES_USER:-supervisor_user}:${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}@postgres:5432/${POSTGRES_DB:-supervisor_db}
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-super-secret-supervisor-key-2026-production-secure}
+      - SSO_ISSUER=${SSO_ISSUER:-https://sso-a.oussamma.tn}
+      - SSO_CLIENT_ID=${SSO_CLIENT_ID:-ecosystem-supervisor}
+      - SSO_CLIENT_SECRET=${SSO_CLIENT_SECRET:-sso_supervisor_secret_2026}
+      - SSO_REDIRECT_URI=${SSO_REDIRECT_URI:-https://supervisor.oussamma.tn/api/v1/auth/sso/callback}
+      - LITELLM_BASE_URL=${LITELLM_BASE_URL:-https://ai.oussamma.tn}
+      - LITELLM_API_KEY=${LITELLM_API_KEY:-sk-oussamma-master-gateway-2026}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - supervisor_net
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: supervisor-worker
+    restart: always
+    command: ["python", "-m", "app.workers.event_worker"]
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-supervisor_user}:${POSTGRES_PASSWORD:-supervisor_secret_pass_2026}@postgres:5432/${POSTGRES_DB:-supervisor_db}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - supervisor_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: supervisor-frontend
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=https://supervisor.oussamma.tn
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - supervisor_net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  supervisor_net:
+    driver: bridge

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "supervisor-sdk"
+version = "1.0.0"
+authors = [
+  { name="Oussamma Ben Hassine", email="oussammabenhassine@gmail.com" },
+]
+description = "Official Python SDK for the oussamma.tn Ecosystem Supervisor"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "httpx>=0.24.0",
+]

@@ -1,0 +1,21 @@
+{
+  "name": "@oussamma/supervisor-sdk",
+  "version": "1.0.0",
+  "description": "Official TypeScript/Node.js SDK for the oussamma.tn Ecosystem Supervisor",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "supervisor",
+    "telemetry",
+    "audit",
+    "analytics"
+  ],
+  "author": "Oussamma Ben Hassine",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
