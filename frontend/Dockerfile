@@ -2,17 +2,18 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install
 
 COPY . .
 RUN mkdir -p public
 RUN npm run build
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 
