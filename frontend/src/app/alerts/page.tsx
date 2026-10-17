@@ -12,35 +12,9 @@ export default function AlertsPage() {
   const loadAlerts = () => {
     api.getAlerts(filterStatus || undefined)
       .then(setAlerts)
-      .catch(() => {
-        setAlerts([
-          {
-            id: 'al-01',
-            rule_id: 'rule_failed_logins',
-            application_id: 'sso',
-            severity: 'critical',
-            title: 'Multiple échecs de connexion SSO',
-            message: '3 échecs consécutifs d’authentification détectés pour l’adresse IP 197.3.24.11',
-            status: 'open',
-            occurrence_count: 3,
-            first_seen_at: '2026-10-17T06:15:00Z',
-            last_seen_at: '2026-10-17T06:22:00Z',
-            metadata: { ip: '197.3.24.11', actor: 'unknown' },
-          },
-          {
-            id: 'al-02',
-            rule_id: 'rule_high_downloads',
-            application_id: 'drive',
-            severity: 'warning',
-            title: 'Téléchargements anormaux détectés',
-            message: 'Plus de 10 téléchargements simultanés de fichiers volumineux sur ByteVault Drive.',
-            status: 'open',
-            occurrence_count: 12,
-            first_seen_at: '2026-10-17T05:40:00Z',
-            last_seen_at: '2026-10-17T05:50:00Z',
-            metadata: { total_bytes: 48000000 },
-          },
-        ]);
+      .catch((err) => {
+        console.warn('Failed to fetch alerts:', err);
+        setAlerts([]);
       });
   };
 

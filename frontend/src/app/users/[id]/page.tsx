@@ -40,87 +40,29 @@ export default function UserActivity360Page() {
       })
       .catch((err) => {
         console.error('Failed to load user activity:', err);
-        // Realistic fallback for demonstration
-        setData({
-          user: {
-            id: `https://sso-a.oussamma.tn:${userId}`,
-            issuer: 'https://sso-a.oussamma.tn',
-            sub: userId,
-            email: 'oussammabenhassine@gmail.com',
-            name: 'Oussamma Ben Hassine',
-            role: 'admin',
-            is_active: true,
-            last_active_at: new Date().toISOString(),
-            accessible_apps: ['sso', 'drive', 'messenger', 'cv-builder', 'litellm', 'portal', 'recettes'],
-            total_events: 18,
-          },
-          timeline: [
-            {
-              event_id: 'ev-1',
-              event_type: 'cv.exported_pdf',
-              application_id: 'cv-builder',
-              application_name: 'AI CV Builder',
-              occurred_at: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-              outcome: 'success',
-              resource_type: 'cv',
-              resource_id: 'cv-lead-architect-2026',
-              resource_name: 'CV Senior Architect Cloud & AI.pdf',
-              metadata: { format: 'pdf', template: 'modern-executive', pages: 2 },
-            },
-            {
-              event_id: 'ev-2',
-              event_type: 'ai.completion',
-              application_id: 'litellm',
-              application_name: 'LiteLLM Gateway',
-              occurred_at: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-              outcome: 'success',
-              resource_type: 'llm_session',
-              resource_id: 'req-8841-ai',
-              metadata: { model: 'gemini-1.5-flash', prompt_tokens: 350, completion_tokens: 120, total_tokens: 470, cost: 0.0004 },
-            },
-            {
-              event_id: 'ev-3',
-              event_type: 'file.downloaded',
-              application_id: 'drive',
-              application_name: 'ByteVault Drive',
-              occurred_at: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-              outcome: 'success',
-              resource_type: 'file',
-              resource_id: 'f-infra-coolify-specs',
-              resource_name: 'coolify_architecture_specs.zip',
-              metadata: { size_bytes: 14250000, mime_type: 'application/zip' },
-            },
-            {
-              event_id: 'ev-4',
-              event_type: 'message.sent',
-              application_id: 'messenger',
-              application_name: 'Smart Messenger',
-              occurred_at: new Date(Date.now() - 1000 * 60 * 42).toISOString(),
-              outcome: 'success',
-              resource_type: 'conversation',
-              resource_id: 'conv-devops-core',
-              metadata: { thread_id: 'conv-devops-core', encrypted: true },
-            },
-            {
-              event_id: 'ev-5',
-              event_type: 'sso.login',
-              application_id: 'sso',
-              application_name: 'SSO Authenticator',
-              occurred_at: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-              outcome: 'success',
-              metadata: { auth_method: 'oidc_google', client_ip: '197.3.24.11' },
-            },
-          ],
-          total_events: 5,
-          page: 1,
-          page_size: 50,
-          covered_apps: ['sso', 'drive', 'messenger', 'cv-builder', 'litellm'],
-          unintegrated_apps: ['tv-player', 'matrix-digest', 'sshwebclient'],
-          date_range: {},
-        });
+        setData(null);
         setLoading(false);
       });
   }, [userId, selectedApp]);
+
+  if (loading) {
+    return (
+      <div className="p-8 text-center text-xs text-slate-500">
+        Chargement de l'activité 360°...
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="p-8 text-center text-xs text-slate-500 space-y-3">
+        <p>Utilisateur non trouvé ou aucune donnée disponible pour cet identifiant.</p>
+        <Link href="/users" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          Retour à l'annuaire des utilisateurs
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -204,8 +146,14 @@ export default function UserActivity360Page() {
       </div>
 
       {/* Interactive 360° Timeline */}
-      <div className="relative border-l border-slate-200 dark:border-slate-800 ml-3 sm:ml-4 space-y-6 pl-4 sm:pl-6 py-2">
-        {data?.timeline.map((ev) => (
+      {data?.timeline.length === 0 ? (
+        <div className="p-8 rounded-xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs shadow-sm">
+          <Activity className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-50" />
+          <span>Aucune action enregistrée pour le moment pour cet utilisateur dans les applications sélectionnées.</span>
+        </div>
+      ) : (
+        <div className="relative border-l border-slate-200 dark:border-slate-800 ml-3 sm:ml-4 space-y-6 pl-4 sm:pl-6 py-2">
+          {data?.timeline.map((ev) => (
           <div
             key={ev.event_id}
             onClick={() => setSelectedEvent(ev)}
@@ -260,6 +208,7 @@ export default function UserActivity360Page() {
           </div>
         ))}
       </div>
+      )}
 
       {/* Selected Event Details Modal / Drawer */}
       {selectedEvent && (

@@ -33,35 +33,20 @@ export default function DashboardPage() {
       })
       .catch((err) => {
         console.error('Failed to load overview:', err);
-        // Fallback default dataset for offline preview
         setData({
-          total_users: 4,
-          dau: 3,
-          wau: 4,
-          mau: 4,
-          total_events_today: 142,
-          total_events_all_time: 1890,
+          total_users: 1,
+          dau: 0,
+          wau: 0,
+          mau: 0,
+          total_events_today: 0,
+          total_events_all_time: 0,
           active_alerts_count: 0,
-          successful_logins_24h: 38,
-          failed_logins_24h: 1,
-          ai_tokens_today: 48920,
-          ai_cost_today_usd: 0.082,
-          top_applications: [
-            { application_id: 'sso', name: 'SSO Authenticator', event_count: 512, user_count: 4, percentage: 35.2, status: 'active' },
-            { application_id: 'drive', name: 'ByteVault Drive', event_count: 410, user_count: 3, percentage: 28.1, status: 'active' },
-            { application_id: 'messenger', name: 'Smart Messenger', event_count: 320, user_count: 4, percentage: 22.0, status: 'active' },
-            { application_id: 'cv-builder', name: 'AI CV Builder', event_count: 120, user_count: 2, percentage: 8.2, status: 'active' },
-            { application_id: 'litellm', name: 'LiteLLM Gateway', event_count: 94, user_count: 3, percentage: 6.5, status: 'active' },
-          ],
-          activity_trend_7d: [
-            { date: '11 Oct', count: 180 },
-            { date: '12 Oct', count: 220 },
-            { date: '13 Oct', count: 310 },
-            { date: '14 Oct', count: 280 },
-            { date: '15 Oct', count: 390 },
-            { date: '16 Oct', count: 440 },
-            { date: '17 Oct', count: 520 },
-          ],
+          successful_logins_24h: 0,
+          failed_logins_24h: 0,
+          ai_tokens_today: 0,
+          ai_cost_today_usd: 0,
+          top_applications: [],
+          activity_trend_7d: [],
         });
         setLoading(false);
       });

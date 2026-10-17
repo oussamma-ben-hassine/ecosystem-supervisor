@@ -41,8 +41,6 @@ async def get_analytics_overview(db: AsyncSession = Depends(get_db)):
             ActivityEvent.actor_sub.is_not(None),
         )
     ) or 0
-    if dau == 0 and total_users > 0:
-        dau = min(total_users, 3)
 
     # WAU (Weekly Active Users)
     wau = await db.scalar(
@@ -51,8 +49,6 @@ async def get_analytics_overview(db: AsyncSession = Depends(get_db)):
             ActivityEvent.actor_sub.is_not(None),
         )
     ) or 0
-    if wau == 0 and total_users > 0:
-        wau = min(total_users, 4)
 
     # MAU (Monthly Active Users)
     mau = await db.scalar(
@@ -61,8 +57,6 @@ async def get_analytics_overview(db: AsyncSession = Depends(get_db)):
             ActivityEvent.actor_sub.is_not(None),
         )
     ) or 0
-    if mau == 0 and total_users > 0:
-        mau = total_users
 
     # 2. Event counts
     total_events_today = await db.scalar(

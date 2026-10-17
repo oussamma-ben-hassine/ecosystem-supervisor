@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   ChevronRight,
   X,
+  LogOut,
 } from 'lucide-react';
 import { useMobileMenu } from './MobileMenuContext';
 
@@ -114,8 +115,42 @@ export default function Sidebar() {
           })}
         </nav>
 
+        {/* User / Logout Section */}
+        <div className="p-3 border-t border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-black/10 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-xs">
+              OB
+            </div>
+            <div className="truncate">
+              <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 block truncate">
+                Oussamma B.
+              </span>
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono block">
+                Administrateur
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={async () => {
+              try {
+                await fetch('/api/v1/auth/logout', { method: 'POST' });
+              } catch {}
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem('access_token');
+                sessionStorage.clear();
+                window.location.href = 'https://sso-a.oussamma.tn/logout';
+              }
+            }}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+            title="Se déconnecter"
+            aria-label="Déconnexion"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+
         {/* System Status Footer */}
-        <div className="p-4 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-black/20">
+        <div className="p-3 border-t border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">

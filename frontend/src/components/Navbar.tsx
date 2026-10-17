@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Bell, Search, ExternalLink, Shield, Menu, Sun, Moon } from 'lucide-react';
+import { Bell, Search, ExternalLink, Shield, Menu, Sun, Moon, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
 import { useMobileMenu } from './MobileMenuContext';
@@ -9,6 +9,17 @@ import { useMobileMenu } from './MobileMenuContext';
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { toggle: toggleMobileMenu } = useMobileMenu();
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/v1/auth/logout', { method: 'POST' });
+    } catch {}
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      sessionStorage.clear();
+      window.location.href = 'https://sso-a.oussamma.tn/logout';
+    }
+  };
 
   return (
     <header className="h-16 border-b border-slate-200 dark:border-white/10 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between">
@@ -93,6 +104,17 @@ export default function Navbar() {
             </span>
           </div>
         </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/40 bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-semibold transition-all shadow-xs"
+          title="Se déconnecter"
+          aria-label="Se déconnecter"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">Déconnexion</span>
+        </button>
       </div>
     </header>
   );

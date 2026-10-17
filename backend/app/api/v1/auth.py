@@ -135,3 +135,16 @@ async def get_current_user_profile(user: Optional[Dict[str, Any]] = Depends(get_
         "role": user.get("role", "admin"),
         "is_authenticated": True,
     }
+
+
+@router.get("/logout")
+@router.post("/logout")
+async def logout():
+    """Logout endpoint: clear session and return SSO logout URL."""
+    sso_logout_url = f"{settings.SSO_ISSUER}/logout"
+    return {
+        "status": "success",
+        "message": "Logged out successfully",
+        "redirect_url": sso_logout_url,
+    }
+

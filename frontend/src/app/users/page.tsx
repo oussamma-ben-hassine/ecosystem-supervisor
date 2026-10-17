@@ -20,57 +20,7 @@ export default function UsersDirectoryPage() {
       })
       .catch((err) => {
         console.error('Failed to load users:', err);
-        // Fallback demo users
-        setUsers([
-          {
-            id: 'https://sso-a.oussamma.tn:user-oussamma-001',
-            issuer: 'https://sso-a.oussamma.tn',
-            sub: 'user-oussamma-001',
-            email: 'oussammabenhassine@gmail.com',
-            name: 'Oussamma Ben Hassine',
-            role: 'admin',
-            is_active: true,
-            last_active_at: new Date().toISOString(),
-            accessible_apps: ['sso', 'drive', 'messenger', 'cv-builder', 'litellm', 'portal', 'recettes', 'notes', 'devspace'],
-            total_events: 1240,
-          },
-          {
-            id: 'https://sso-a.oussamma.tn:user-demo-sarah',
-            issuer: 'https://sso-a.oussamma.tn',
-            sub: 'user-demo-sarah',
-            email: 'sarah.k@example.com',
-            name: 'Sarah Khemir',
-            role: 'user',
-            is_active: true,
-            last_active_at: new Date(Date.now() - 3600000).toISOString(),
-            accessible_apps: ['drive', 'messenger', 'recettes'],
-            total_events: 340,
-          },
-          {
-            id: 'https://sso-a.oussamma.tn:user-demo-mehdi',
-            issuer: 'https://sso-a.oussamma.tn',
-            sub: 'user-demo-mehdi',
-            email: 'mehdi.t@example.com',
-            name: 'Mehdi Trabelsi',
-            role: 'user',
-            is_active: true,
-            last_active_at: new Date(Date.now() - 7200000).toISOString(),
-            accessible_apps: ['cv-builder', 'notes'],
-            total_events: 185,
-          },
-          {
-            id: 'https://sso-a.oussamma.tn:user-demo-amine',
-            issuer: 'https://sso-a.oussamma.tn',
-            sub: 'user-demo-amine',
-            email: 'amine.b@example.com',
-            name: 'Amine Belhaj',
-            role: 'user',
-            is_active: false,
-            last_active_at: new Date(Date.now() - 86400000).toISOString(),
-            accessible_apps: ['drive'],
-            total_events: 82,
-          },
-        ]);
+        setUsers([]);
         setLoading(false);
       });
   }, [search]);

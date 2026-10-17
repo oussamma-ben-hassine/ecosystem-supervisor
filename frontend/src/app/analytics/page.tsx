@@ -28,19 +28,19 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           title="DAU (DAILY ACTIVE USERS)"
-          value={data?.dau || 3}
+          value={data?.dau ?? 0}
           subtext="Utilisateurs uniques sur 24h"
           icon={Users}
         />
         <StatCard
           title="WAU (WEEKLY ACTIVE USERS)"
-          value={data?.wau || 4}
+          value={data?.wau ?? 0}
           subtext="Utilisateurs uniques sur 7 jours"
           icon={Calendar}
         />
         <StatCard
           title="MAU (MONTHLY ACTIVE USERS)"
-          value={data?.mau || 4}
+          value={data?.mau ?? 0}
           subtext="Utilisateurs uniques sur 30 jours"
           icon={TrendingUp}
         />

@@ -12,35 +12,18 @@ export default function AISupervisionPage() {
   useEffect(() => {
     api.getAIUsage()
       .then(setData)
-      .catch(() => {
+      .catch((err) => {
+        console.warn('Could not fetch AI usage:', err);
         setData({
-          total_requests: 485,
-          total_tokens: 382400,
-          prompt_tokens: 284100,
-          completion_tokens: 98300,
-          estimated_cost_usd: 0.184,
-          error_count: 2,
-          models: [
-            { model: 'gemini-1.5-flash', requests: 310, tokens: 210000, cost: 0.042 },
-            { model: 'gemini-1.5-pro', requests: 95, tokens: 120400, cost: 0.112 },
-            { model: 'gpt-4o-mini', requests: 50, tokens: 32000, cost: 0.018 },
-            { model: 'claude-3-5-sonnet', requests: 30, tokens: 20000, cost: 0.012 },
-          ],
-          applications: [
-            { application_id: 'cv-builder', requests: 180, tokens: 145000, cost: 0.075 },
-            { application_id: 'messenger', requests: 120, tokens: 85000, cost: 0.041 },
-            { application_id: 'recettes', requests: 95, tokens: 68000, cost: 0.032 },
-            { application_id: 'supervisor', requests: 90, tokens: 84400, cost: 0.036 },
-          ],
-          timeline: [
-            { date: '11 Oct', tokens: 35000 },
-            { date: '12 Oct', tokens: 42000 },
-            { date: '13 Oct', tokens: 58000 },
-            { date: '14 Oct', tokens: 49000 },
-            { date: '15 Oct', tokens: 62000 },
-            { date: '16 Oct', tokens: 68000 },
-            { date: '17 Oct', tokens: 68400 },
-          ],
+          total_requests: 0,
+          total_tokens: 0,
+          prompt_tokens: 0,
+          completion_tokens: 0,
+          estimated_cost_usd: 0,
+          error_count: 0,
+          models: [],
+          applications: [],
+          timeline: [],
         });
       });
   }, []);
@@ -72,7 +55,7 @@ export default function AISupervisionPage() {
         />
         <StatCard
           title="COÛT GLOBAL ESTIMÉ"
-          value={`$${data?.estimated_cost_usd || 0}`}
+          value={`$${(data?.estimated_cost_usd || 0).toFixed(4)}`}
           icon={DollarSign}
           subtext="Calculé au prorata des modèles"
         />
@@ -91,18 +74,24 @@ export default function AISupervisionPage() {
         <div className="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Répartition par Modèle</h3>
           <div className="space-y-3">
-            {data?.models.map((m) => (
-              <div key={m.model} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200 block">{m.model}</span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{m.requests} requêtes</span>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{m.tokens.toLocaleString()} tokens</span>
-                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${m.cost} USD</span>
-                </div>
+            {!data?.models || data.models.length === 0 ? (
+              <div className="text-center p-6 text-xs text-slate-500 dark:text-slate-400">
+                Aucune consommation de modèle enregistrée pour le moment.
               </div>
-            ))}
+            ) : (
+              data.models.map((m) => (
+                <div key={m.model} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200 block">{m.model}</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{m.requests} requêtes</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{m.tokens.toLocaleString()} tokens</span>
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${m.cost} USD</span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -110,18 +99,24 @@ export default function AISupervisionPage() {
         <div className="p-4 sm:p-5 rounded-xl bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Consommation par Application</h3>
           <div className="space-y-3">
-            {data?.applications.map((a) => (
-              <div key={a.application_id} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-semibold text-slate-800 dark:text-slate-200 block">{a.application_id}</span>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{a.requests} appels IA</span>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{a.tokens.toLocaleString()} tokens</span>
-                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${a.cost} USD</span>
-                </div>
+            {!data?.applications || data.applications.length === 0 ? (
+              <div className="text-center p-6 text-xs text-slate-500 dark:text-slate-400">
+                Aucune application n'a encore émis d'appels IA vers la passerelle.
               </div>
-            ))}
+            ) : (
+              data.applications.map((a) => (
+                <div key={a.application_id} className="p-3 rounded-lg bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200 block">{a.application_id}</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">{a.requests} appels IA</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold block">{a.tokens.toLocaleString()} tokens</span>
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">${a.cost} USD</span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

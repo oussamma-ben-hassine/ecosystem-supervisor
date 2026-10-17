@@ -3,7 +3,7 @@ import hashlib
 import logging
 from datetime import datetime, timedelta
 import random
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from app.core.database import engine, Base, AsyncSessionLocal
 from app.core.security import hash_api_key
 from app.models import (
@@ -258,32 +258,12 @@ async def seed_data():
                     )
                     db.add(access)
 
-            # 5. Seed Demonstration Users & Initial Telemetry
-            demo_users = [
-                {"sub": "user-demo-sarah", "email": "sarah.k@example.com", "name": "Sarah Khemir"},
-                {"sub": "user-demo-mehdi", "email": "mehdi.t@example.com", "name": "Mehdi Trabelsi"},
-                {"sub": "user-demo-amine", "email": "amine.b@example.com", "name": "Amine Benali"},
-            ]
-
-            for du in demo_users:
-                u_stmt = select(User).where(User.sub == du["sub"])
-                u_res = await db.execute(u_stmt)
-                if not u_res.scalar_one_or_none():
-                    user = User(
-                        id=f"https://sso-a.oussamma.tn:{du['sub']}",
-                        issuer="https://sso-a.oussamma.tn",
-                        sub=du["sub"],
-                        email=du["email"],
-                        name=du["name"],
-                        avatar_url=None,
-                        role="user",
-                        is_active=True,
-                        last_active_at=datetime.utcnow() - timedelta(hours=random.randint(1, 48)),
-                    )
-                    db.add(user)
-
+            # 5. Purge any demo or test users to ensure only real production values exist
+            await db.execute(delete(User).where(User.sub.like("user-demo-%")))
+            await db.execute(delete(UserAppAccess).where(UserAppAccess.user_id.like("%user-demo-%")))
+            await db.execute(delete(ActivityEvent).where(ActivityEvent.actor_sub.like("user-demo-%")))
             await db.commit()
-            logger.info("Database seeding completed successfully.")
+            logger.info("Database initialized with real production data only. Demo data purged.")
 
         except Exception as e:
             logger.error("Error seeding initial database: %s", e)
