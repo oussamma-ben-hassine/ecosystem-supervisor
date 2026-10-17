@@ -89,9 +89,9 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=https://supervisor.oussamma.tn
       - INTERNAL_BACKEND_URL=http://backend:8000
-      - PORT=3000
-    expose:
-      - "3000"
+      - PORT=80
+    ports:
+      - "80"
     depends_on:
       - backend
     networks:
