@@ -84,7 +84,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: supervisor-frontend
     restart: always
     environment:
       - NEXT_PUBLIC_API_URL=https://supervisor.oussamma.tn
@@ -96,6 +95,7 @@ services:
       - backend
     networks:
       - supervisor_net
+      - coolify
 
 volumes:
   postgres_data:
@@ -104,3 +104,5 @@ volumes:
 networks:
   supervisor_net:
     driver: bridge
+  coolify:
+    external: true
