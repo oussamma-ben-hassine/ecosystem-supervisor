@@ -91,6 +91,19 @@ services:
       - PORT=3000
     ports:
       - "3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=coolify"
+      - "traefik.http.routers.supervisor-http.entrypoints=http"
+      - "traefik.http.routers.supervisor-http.rule=Host(`supervisor.oussamma.tn`)"
+      - "traefik.http.routers.supervisor-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.supervisor-https.entrypoints=https"
+      - "traefik.http.routers.supervisor-https.rule=Host(`supervisor.oussamma.tn`)"
+      - "traefik.http.routers.supervisor-https.tls=true"
+      - "traefik.http.routers.supervisor-https.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.supervisor-https.service=supervisor-frontend"
+      - "traefik.http.services.supervisor-frontend.loadbalancer.server.port=3000"
     depends_on:
       - backend
     networks:
